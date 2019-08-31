@@ -61,5 +61,5 @@ wow starts at (row,col) = (3,4) and proceeds left.
 
 <Ulliststr.cpp>
 -------------------------------------------------------------------------------
-An Unrolled Linked List implemented in C++./
+An Unrolled Linked List implemented in C++.\
 The header file was provided by the professors.
