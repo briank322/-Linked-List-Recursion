@@ -63,3 +63,9 @@ wow starts at (row,col) = (3,4) and proceeds left.
 -------------------------------------------------------------------------------
 An Unrolled Linked List implemented in C++.\
 The header file was provided by the professors.
+
+<Split.cpp>
+-------------------------------------------------------------------------------
+A recursive function to split a sorted singly-linked
+list into two sorted linked lists, where one has the even 
+numbers and the other contains the odd numbers. 
