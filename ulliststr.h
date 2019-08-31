@@ -114,6 +114,62 @@ class ULListStr {
    */
   void clear();
 
+
+
+  /**
+   * Copy constructor (initiale list with deep copy of `other`)
+   *
+   * It is fine to consolodate the contents of `other` to start at the head
+   *  Item's location 0.
+   *
+   * MUST RUN in O(n) where n is the size of other
+   */
+  ULListStr (const ULListStr& other);
+
+  /**
+   * Assignment Operator (replace current contents with deep copy of `other`)
+   *  Note: It is fine to deallocate the current contents and construct
+   *  a whole new set of internal Items maintaining the same internal data
+   *  element positions, or consolodating the elements to start at the head
+   *  Item's location 0.
+   *
+   *  MUST RUN in O(n+m) where n is the size of this list and m the size
+   *   of `other` and not O(n^2) or O(m^2)
+   */
+  ULListStr& operator= (const ULListStr& other);
+
+  /**
+   * Concatenation operator.
+   * Returns a separate list consisting of other appended to this.
+   * Does not modify this nor other.
+   *
+   *  Note: It is fine to consolodate the elements from both lists 
+   *  to start at the returned list's head Item's location 0.
+   *
+   *  MUST RUN in O(n+m) where n is the size of this list and m the size
+   *   of `other`
+   */
+  ULListStr operator+ (const ULListStr& other) const;
+
+  /**
+   * Remove the last 'num' strings from the **back** of this list
+   * 
+   * Returns a reference to this list.
+   *
+   *  MUST RUN in O(num)
+   */
+  ULListStr& operator-= (size_t num);
+
+  /**
+   * Const access Operator of element at location/position: loc
+   */
+  std::string const & operator[] (size_t loc) const;
+
+  /**
+   * Non-const access Operator of element at location/position: loc
+   */
+  std::string & operator[] (size_t loc);
+
  private:
   /** 
    * Returns a pointer to the item at index, loc,
@@ -121,6 +177,17 @@ class ULListStr {
    *   - MUST RUN in O(n) 
    */
   std::string* getValAtLoc(size_t loc) const;
+
+   /*
+   * Appends the contents of `other` to the end of `this` list
+   * allocating new Items and updating pointers and first/last
+   * indices of `this` as necessary.
+   *
+   * Does not modify `other`.
+   *
+   * Runs in O(m) where m is the size of `other`
+   */
+  void appendContents(const ULListStr& other);
 
 
   /**
@@ -134,3 +201,4 @@ class ULListStr {
 };
 
 #endif
+
