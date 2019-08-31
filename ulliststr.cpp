@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include "ulliststr.h"
 
+//Default constructor - empty list
 ULListStr::ULListStr()
 {
   head_ = NULL;
@@ -9,21 +10,28 @@ ULListStr::ULListStr()
   size_ = 0;
 }
 
+//Destructor
 ULListStr::~ULListStr()
 {
   clear();
 }
 
+//Returns true if the list is empty, false otherwise
+//MUST RUN in O(1)
 bool ULListStr::empty() const
 {
   return size_ == 0;
 }
 
+//Returns the current number of items in the list 
+//MUST RUN in O(1)
 size_t ULListStr::size() const
 {
   return size_;
 }
 
+//Overwrites the old value at index, pos, with val
+//Can run in O(n)
 void ULListStr::set(size_t loc, const std::string& val)
 {
     std::string* ptr = getValAtLoc(loc);
@@ -33,6 +41,8 @@ void ULListStr::set(size_t loc, const std::string& val)
     *ptr = val;
 }
 
+//Returns the value at index, pos
+//Can run in O(n)
 std::string& ULListStr::get(size_t loc)
 {
     std::string* ptr = getValAtLoc(loc);
@@ -42,6 +52,9 @@ std::string& ULListStr::get(size_t loc)
     return *ptr;
 }
 
+
+//Returns the value at index, pos
+//Can run in O(n)
 std::string const & ULListStr::get(size_t loc) const
 {
     std::string* ptr = getValAtLoc(loc);
@@ -51,6 +64,7 @@ std::string const & ULListStr::get(size_t loc) const
     return *ptr;
 }
 
+//Deletes all items in the list
 void ULListStr::clear()
 {
     while(head_ != NULL){
@@ -145,7 +159,7 @@ void ULListStr::pop_back()
 
    
 
-
+//Adds a new value to the front of the list.
 void ULListStr::push_front(const std::string& val)
 
 {
@@ -220,12 +234,18 @@ void ULListStr::pop_front()
      {
        size_ --;
        //Update head nodes to the second node.
-       head_=head_->next;
-       //Delete the old head
-       delete head_->prev;
-       //Assign the new head's prev to null
-       head_->prev = NULL;
-       head_->first = 0;
+       Item* temp = head_;
+       head_= head_->next;
+       if (head_!=NULL)
+       {
+         //Assign the new head's prev to null 
+         head_->prev = NULL;
+         head_->first = 0;
+       }
+       delete temp;
+       
+       
+       
      }
 
 }
@@ -256,7 +276,7 @@ std::string* ULListStr::getValAtLoc(size_t loc) const
         
          if((head_->first) == 0 && (head_->last) == 0)
          {
-            return NULL;
+             return NULL;
          }
          //First, the loc is inside the head's array.
          if(loc < onlyheadsize)
@@ -264,8 +284,8 @@ std::string* ULListStr::getValAtLoc(size_t loc) const
             size_t temp = head_->first;
             while(counter_head<loc)
             {
-               counter_head++;
-               temp++;
+                counter_head++;
+                temp++;
             }
           
             return &(head_->val[temp]);
@@ -276,15 +296,15 @@ std::string* ULListStr::getValAtLoc(size_t loc) const
          {
            while(counter_all < (loc-onlyheadsize)/10 )
            {
-             buff = buff->next;
-             counter_all++;
+               buff = buff->next;
+               counter_all++;
            }
            return &(buff->val[(loc-onlyheadsize)%10]);
          }
           //Otherwise, NULL
          else
          {
-           return NULL;
+             return NULL;
          }
     }
 }
@@ -308,3 +328,103 @@ std::string const & ULListStr::front() const
     }
     return head_->val[head_->first];
 }
+
+
+
+
+//----------------HOMEWORK 3 FUNCTIONS-------------//
+
+//Copy constructor (initiale list with deep copy of `other`)
+//MUST RUN in O(n) where n is the size of other
+   
+ULListStr::ULListStr (const ULListStr& other)
+{
+      this->head_ = NULL;
+      this->tail_ = NULL;
+      size_ = 0;
+      appendContents(other);
+}
+
+
+//Assignment Operator (replace current contents with deep copy of `other`)
+//MUST RUN in O(n+m) 
+   
+ULListStr& ULListStr::operator= (const ULListStr& other)
+{
+      if(this == &other)
+      {
+          return *this;
+      }
+
+      clear();
+      appendContents(other);
+      return *this;
+}
+
+  
+//Returns a separate list consisting of other appended to this. 
+//MUST RUN in O(n+m)
+
+ULListStr ULListStr::operator+ (const ULListStr& other) const
+{
+     ULListStr newlist; // c= a+b 
+     newlist.appendContents(*this);
+     newlist.appendContents(other);
+     return newlist;
+}
+
+//Remove the last 'num' strings from the **back** of this list
+//MUST RUN in O(num)
+   
+ULListStr& ULListStr::operator-= (size_t num)
+{
+    
+    for(size_t i = 0; i< num; i++)
+    {
+        pop_back();
+    }
+    return *this;
+}
+
+
+ //Const access Operator of element at location/position: loc
+ std::string const & ULListStr::operator[] (size_t loc) const
+ {
+      if(loc >= size_)
+      {
+          throw std::invalid_argument("bad location");
+      }
+      return get(loc);
+ }
+
+
+//Non-const access Operator of element at location/position: loc
+
+ std::string & ULListStr::operator[] (size_t loc)
+ {
+      if(loc >= size_)
+      {
+          throw std::invalid_argument("bad location");
+      }
+      return get(loc);
+ }
+
+
+
+//Appends the contents of `other` to the end of `this` list
+//Runs in O(m) where m is the size of `other`
+
+ void ULListStr::appendContents(const ULListStr& other)
+ {
+      Item* t = other.head_;
+      while(t != NULL)
+      {
+          for(size_t i = (t->first); i<(t->last); i++)
+      {
+          this->push_back(t->val[i]);
+
+      }
+          t = t->next;
+      }
+      
+  }
