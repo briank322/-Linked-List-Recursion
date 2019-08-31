@@ -59,3 +59,7 @@ For the target word wow the output should be:
 wow starts at (row,col) = (3,2) and proceeds right.
 wow starts at (row,col) = (3,4) and proceeds left.
 
+<Ulliststr.cpp>
+-------------------------------------------------------------------------------
+An Unrolled Linked List implemented in C++./
+The header file was provided by the professors.
