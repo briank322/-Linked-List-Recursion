@@ -42,10 +42,10 @@ a word search solver. Given a grid of characters and a target word, find all occ
 
 For example, given the grid below and the target word snow the output should be as shown
 
-a p s d z
-c d n i b
-s n o w a
-j b w o w
+a p s d z\n
+c d n i b\n
+s n o w a\n
+j b w o w\n
 Desired output for the target word snow should be:
 
 snow starts at (row,col) = (0,2) and proceeds down.
